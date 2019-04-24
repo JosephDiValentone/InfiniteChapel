@@ -12,6 +12,9 @@ import GameplayKit
 class GameScene: SKScene {
     
     let playername = "Player"
+    let randenemypos = Int.random(in: 0 ..< 2)
+    
+    var tapQueue = [Int]()
     
     class GameScene: SKScene, SKPhysicsContactDelegate{
         // set up game scene here
@@ -40,6 +43,40 @@ class GameScene: SKScene {
         let w = (self.size.width + self.size.height) * 0.05
         }
     
+    func throwTheEnemys (){
+        var enemy: SKNode
+        switch(randenemypos){
+        case 0 :
+            let startpoint = 0
+        case 1 :
+            let startpoint = 0
+        case 2 :
+            let startpoint = 0
+            
+        default : break
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    //help users tap
+    func processUserTaps(forUpdate currentTime: CFTimeInterval){
+        for tapCount in tapQueue{
+            if tapCount == 1 {
+                // jump function
+            }
+            tapQueue.remove(at: 0)
+        }
+    }
+    
     
     
     func touchDown(atPoint pos : CGPoint) {
@@ -54,11 +91,17 @@ class GameScene: SKScene {
  
         
     }
-    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = touches.first {
+            if (touch.tapCount == 1){
+                tapQueue.append(1)
+            }
+        }
+    }
 
     
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        
     }
 }
