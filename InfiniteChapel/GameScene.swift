@@ -9,38 +9,32 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene,SKPhysicsContactDelegate {
     
     let playername = "Player"
     let randenemypos = Int.random(in: 0 ..< 2)
+    let backgroundVelocity : CGFloat = 3.0
+    public var screenWidth: CGFloat{
+        return UIScreen.main.bounds.width
+    }
+    public var screenHeight: CGFloat{
+        return UIScreen.main.bounds.height
+    }
     
     var tapQueue = [Int]()
     
-    class GameScene: SKScene, SKPhysicsContactDelegate{
-        // set up game scene here
-        
-        
-        
-        
-    }
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         //creates border body and allows things to enter and exit
-        let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
-        // Get label node from scene and store it for use later
-//        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-//        if let label = self.label {
-//            label.alpha = 0.0
-//            label.run(SKAction.fadeIn(withDuration: 2.0))
-//        }
-        // add player as node
-        let backg = childNode(withName: "Back") as! SKSpriteNode
+       // let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+        
+        self.initializingScrollBackground()
         let player = childNode(withName: "Player")as! SKSpriteNode
        // addChild(player)
         
         // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
+        //let w = (self.size.width + self.size.height) * 0.05
         }
     
     func throwTheEnemys (){
@@ -55,8 +49,29 @@ class GameScene: SKScene {
             
         default : break
         }
+    }
+    
+    func initializingScrollBackground() {
         
-        
+        for index in 0...2{
+            let bg = SKSpriteNode(imageNamed: "Back")
+            bg.size = CGSize(width: screenWidth, height: screenHeight )
+            bg.position = CGPoint(x: index * Int(bg.size.width), y: -200)
+            bg.anchorPoint = CGPoint.zero
+            bg.name = "Back"
+            self.addChild(bg)
+        }
+    }
+    func moveBackground() {
+        self.enumerateChildNodes(withName: "Back", using: {(node, stop) -> Void in
+            if let bg = node as? SKSpriteNode{
+                bg.position = CGPoint(x: bg.position.x - self.backgroundVelocity, y : bg.position.y)
+                
+                if bg.position.x <= -bg.size.width {
+                    bg.position = CGPoint(x:bg.position.x + bg.size.width * 2, y:bg.position.y)
+                }
+            }
+        })
     }
     
     
@@ -102,6 +117,6 @@ class GameScene: SKScene {
     
     
     override func update(_ currentTime: TimeInterval) {
-        
+        self.moveBackground()
     }
 }
