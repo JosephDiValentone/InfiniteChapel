@@ -13,7 +13,10 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     
     let playername = "Player"
     let randenemypos = Int.random(in: 0 ..< 2)
+    let obstacleCategory = 0x1 << 2
+    let playercategory = 0x1 << 1
     let backgroundVelocity : CGFloat = 3.0
+    let coinVelocity: CGFloat = 5.0
     public var screenWidth: CGFloat{
         return UIScreen.main.bounds.width
     }
@@ -31,24 +34,30 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         
         self.initializingScrollBackground()
         let player = childNode(withName: "Player")as! SKSpriteNode
+        self.addCoin()
        // addChild(player)
         
         // Create shape node to use during mouse interaction
         //let w = (self.size.width + self.size.height) * 0.05
         }
     
-    func throwTheEnemys (){
-        var enemy: SKNode
-        switch(randenemypos){
-        case 0 :
-            let startpoint = 0
-        case 1 :
-            let startpoint = 0
-        case 2 :
-            let startpoint = 0
-            
-        default : break
-        }
+    func addCoin(){
+        var coin = SKSpriteNode(imageNamed: "gold_coin")
+        coin.setScale(0.15)
+        
+        //collision detection
+        coin.physicsBody = SKPhysicsBody(rectangleOf: coin.size)
+        coin.physicsBody?.categoryBitMask = UInt32(obstacleCategory)
+        coin.physicsBody?.isDynamic = true
+        coin.physicsBody?.contactTestBitMask = UInt32(playercategory)
+        coin.physicsBody?.collisionBitMask = 0
+        coin.physicsBody?.usesPreciseCollisionDetection = true
+        coin.zPosition = 2
+        coin.name = "coin"
+        //random y position
+        var random: CGFloat = CGFloat(arc4random_uniform(300))
+        coin.position = CGPoint(x:self.frame.size.width , y: random)
+        self.addChild(coin)
     }
     
     func initializingScrollBackground() {
@@ -58,6 +67,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
             bg.size = CGSize(width: screenWidth, height: screenHeight )
             bg.position = CGPoint(x: index * Int(bg.size.width), y: -200)
             bg.anchorPoint = CGPoint.zero
+            bg.zPosition = 0
             bg.name = "Back"
             self.addChild(bg)
         }
