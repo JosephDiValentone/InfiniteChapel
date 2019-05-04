@@ -10,10 +10,12 @@ import SpriteKit
 import GameplayKit
 let obstacleCategory = 0x1 << 2
 let playercategory = 0x1 << 1
+let BorderCategory : UInt32 = 0x1 << 3
 
 class GameScene: SKScene,SKPhysicsContactDelegate {
     
     let playername = "Player"
+    var player: SKSpriteNode?
     let randenemypos = Int.random(in: 0 ..< 2)
    
     let backgroundVelocity : CGFloat = 3.0
@@ -33,18 +35,29 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         //creates border body and allows things to enter and exit
-       // let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
-        physicsWorld.contactDelegate = self
+        let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
+        borderBody.friction = 0
+        self.physicsBody = borderBody
+        
+        let bottomRect = CGRect(x: frame.origin.x, y: frame.origin.y, width:frame.size.width, height: 1)
+        let bottom = SKNode()
+        bottom.physicsBody = SKPhysicsBody(edgeLoopFrom: bottomRect)
+        addChild(bottom)
+        
         
         self.initializingScrollBackground()
-        let player = childNode(withName: "Player")as! SKSpriteNode
-        player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
-        player.physicsBody?.categoryBitMask = UInt32(playercategory)
-        player.physicsBody?.isDynamic = true
-        player.physicsBody?.affectedByGravity = true
-        player.physicsBody?.contactTestBitMask = UInt32(obstacleCategory)
-        player.zPosition = 3
-        player.position.y = 50
+        player = childNode(withName: "Player")as? SKSpriteNode
+        player!.physicsBody = SKPhysicsBody(rectangleOf: player!.size)
+        player!.physicsBody?.categoryBitMask = UInt32(playercategory)
+        player!.physicsBody?.isDynamic = true
+        player!.physicsBody?.affectedByGravity = true
+        player!.physicsBody?.contactTestBitMask = UInt32(obstacleCategory)
+        player!.zPosition = 3
+        player!.position.y = 50
+        physicsWorld.contactDelegate = self
+        
+        borderBody.categoryBitMask = BorderCategory
+        player?.physicsBody!.contactTestBitMask = BorderCategory | UInt32(obstacleCategory)
        // addChild(player)
         }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -54,8 +67,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         jump()
     }
     func jump(){
-        Player?.texture = SKTexture(imageNamed: "Player")
-        Player?.physicsBody?.applyImpulse(CGVector(dx:0, dy: 300))
+        player!.texture = SKTexture(imageNamed: "Mario_Jump")
+        player?.physicsBody?.applyImpulse(CGVector(dx:0, dy: 100))
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
@@ -63,13 +76,9 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         }
     }
     func touchUp(atPoint pos : CGPoint) {
-        Player?.texture = SKTexture(imageNamed: "Player")
+        player?.texture = SKTexture(imageNamed: "Unknownm")
         
     }
-    
-    
-    
-    
     
     
     
@@ -144,6 +153,11 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
             print("intersecting")
             secondBody.node!.removeFromParent()
         }
+        if(firstBody.categoryBitMask == UInt32(playercategory)) && (secondBody.categoryBitMask == UInt32(BorderCategory)){
+            print("intersecting border")
+          
+        }
+        
     }
     
     
