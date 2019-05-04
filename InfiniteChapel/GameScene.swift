@@ -34,7 +34,10 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-        //creates border body and allows things to enter and exit
+        print (screenHeight)
+        
+        print(UIScreen.main.bounds)
+        let rec1 = UIScreen.main.bounds
         let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         borderBody.friction = 0
         self.physicsBody = borderBody
@@ -43,18 +46,20 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
 //        let bottom = SKNode()
 //        bottom.physicsBody = SKPhysicsBody(edgeLoopFrom: bottomRect)
 //        addChild(bottom)
-        
+        //physicsWorld.gravity = CGVector(dx: 0.0, dy: 0.0)
+         physicsWorld.contactDelegate = self
         
         self.initializingScrollBackground()
         player = childNode(withName: "Player")as? SKSpriteNode
         player!.physicsBody = SKPhysicsBody(rectangleOf: player!.size)
         player!.physicsBody?.categoryBitMask = UInt32(playercategory)
         player!.physicsBody?.isDynamic = true
+        player!.physicsBody?.allowsRotation = false
         player!.physicsBody?.affectedByGravity = true
         player!.physicsBody?.contactTestBitMask = UInt32(obstacleCategory)
         player!.zPosition = 3
         player!.position.y = 50
-        physicsWorld.contactDelegate = self
+       
         
         borderBody.categoryBitMask = BorderCategory
         player?.physicsBody!.contactTestBitMask = BorderCategory | UInt32(obstacleCategory)
@@ -77,7 +82,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     }
     func touchUp(atPoint pos : CGPoint) {
         player?.texture = SKTexture(imageNamed: "Unknownm")
-        
     }
     
     
@@ -91,16 +95,17 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         coin.physicsBody?.categoryBitMask = UInt32(obstacleCategory)
         coin.physicsBody?.isDynamic = true
         //coin.physicsBody?.contactTestBitMask = UInt32(playercategory)
-        coin.physicsBody?.collisionBitMask = 0
+        coin.physicsBody?.collisionBitMask = 1
         coin.physicsBody?.usesPreciseCollisionDetection = true
         coin.physicsBody?.affectedByGravity = false
         coin.zPosition = 2
+        //coin.anchorPoint = CGPoint.zero
         coin.name = "coin"
         //random y position
         //let actualranY = random(min: coin.size.width, max:size.height-coin.size.height)
-        let randomint = Int.random(in: 0..<200)
-        let randomy: CGFloat = CGFloat(arc4random_uniform(UInt32(randomint)))
-        coin.position = CGPoint(x: screenWidth, y: randomy)
+        let randomint = Int.random(in: -200..<200)
+        //let randomy: CGFloat = CGFloat(arc4random_uniform(UInt32(randomint)))
+        coin.position = CGPoint(x: screenWidth, y: CGFloat(randomint))
         self.addChild(coin)
     }
     func moveCoin(){
@@ -116,11 +121,11 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     
     func initializingScrollBackground() {
         
-        for index in 0...2{
+        for index in 0...3{
             let bg = SKSpriteNode(imageNamed: "Back")
-            bg.size = CGSize(width: screenWidth, height: screenHeight )
-            bg.position = CGPoint(x: index * Int(bg.size.width), y: -200)
-            bg.anchorPoint = CGPoint.zero
+            bg.size = CGSize(width: screenWidth*2, height: screenHeight )
+            bg.position = CGPoint(x: index * Int(bg.size.width), y: 0)
+            //bg.anchorPoint = CGPoint(x:0.0, y:0.0)
             bg.zPosition = 0
             bg.name = "Back"
             self.addChild(bg)

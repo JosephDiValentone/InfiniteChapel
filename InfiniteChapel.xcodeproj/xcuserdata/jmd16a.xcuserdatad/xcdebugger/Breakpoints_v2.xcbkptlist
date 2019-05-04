@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "InfiniteChapel/GameScene.swift"
-            timestampString = "578683609.0686491"
+            timestampString = "578698557.488896"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
+            startingLineNumber = "162"
+            endingLineNumber = "162"
             landmarkName = "didBegin(_:)"
             landmarkType = "7">
          </BreakpointContent>
