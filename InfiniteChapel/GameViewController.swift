@@ -15,6 +15,8 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        let value = UIInterfaceOrientation.landscapeLeft.rawValue
+//        UIDevice.current.setValue(value, forKey: "orientation")
         
         if let scene = GameScene(fileNamed:"GameScene") {
             // Configure the view.
@@ -30,22 +32,24 @@ class GameViewController: UIViewController {
             
             skView.presentScene(scene)
         }
+       
+        
+        
+        
+
         
     }
 
     override var shouldAutorotate: Bool {
-        return false
+        return true
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-         return [.landscapeLeft]
-        
-        
-//        if UIDevice.current.userInterfaceIdiom == .phone {
-//            return .allButUpsideDown
-//        } else {
-//            return .all
-//        }
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return .allButUpsideDown
+        } else {
+            return .all
+        }
     }
 
     override var prefersStatusBarHidden: Bool {

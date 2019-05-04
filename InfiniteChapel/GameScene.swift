@@ -39,10 +39,10 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         borderBody.friction = 0
         self.physicsBody = borderBody
         
-        let bottomRect = CGRect(x: frame.origin.x, y: frame.origin.y, width:frame.size.width, height: 1)
-        let bottom = SKNode()
-        bottom.physicsBody = SKPhysicsBody(edgeLoopFrom: bottomRect)
-        addChild(bottom)
+//        let bottomRect = CGRect(x: frame.origin.x, y: frame.origin.y, width:frame.size.width, height: 1)
+//        let bottom = SKNode()
+//        bottom.physicsBody = SKPhysicsBody(edgeLoopFrom: bottomRect)
+//        addChild(bottom)
         
         
         self.initializingScrollBackground()
