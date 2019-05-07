@@ -16,7 +16,10 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     
     let playername = "Player"
     var player: SKSpriteNode?
+//    var gametimer: Timer?
+    var walkframe: [SKTexture] = []
     let randenemypos = Int.random(in: 0 ..< 2)
+    let Coincount = "coinCount"
    
     let backgroundVelocity : CGFloat = 3.0
     let coinVelocity: CGFloat = 5.0
@@ -41,30 +44,53 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         let borderBody = SKPhysicsBody(edgeLoopFrom: self.frame)
         borderBody.friction = 0
         self.physicsBody = borderBody
-        
-//        let bottomRect = CGRect(x: frame.origin.x, y: frame.origin.y, width:frame.size.width, height: 1)
-//        let bottom = SKNode()
-//        bottom.physicsBody = SKPhysicsBody(edgeLoopFrom: bottomRect)
-//        addChild(bottom)
-        //physicsWorld.gravity = CGVector(dx: 0.0, dy: 0.0)
          physicsWorld.contactDelegate = self
-        
         self.initializingScrollBackground()
-        player = childNode(withName: "Player")as? SKSpriteNode
+        player = (childNode(withName: "Player")as? SKSpriteNode)!
         player!.physicsBody = SKPhysicsBody(rectangleOf: player!.size)
+        player!.setScale(0.85)
         player!.physicsBody?.categoryBitMask = UInt32(playercategory)
         player!.physicsBody?.isDynamic = true
         player!.physicsBody?.allowsRotation = false
         player!.physicsBody?.affectedByGravity = true
         player!.physicsBody?.contactTestBitMask = UInt32(obstacleCategory)
-        player!.zPosition = 3
+        player!.zPosition = 2
         player!.position.y = 50
-       
-        
         borderBody.categoryBitMask = BorderCategory
-        player?.physicsBody!.contactTestBitMask = BorderCategory | UInt32(obstacleCategory)
-       // addChild(player)
+        player!.physicsBody!.contactTestBitMask = BorderCategory | UInt32(obstacleCategory)
+        setupCount()
         }
+//    func buildwalk(){
+//        let walkingplayer = SKTextureAtlas(named: "Walking")
+//        var playframes: [SKTexture] = []
+//        let numImages = walkingplayer.textureNames.count
+//        for i in 1...numImages{
+//            let walkingman = "walking\(i)"
+//            playframes.append(walkingplayer.textureNamed(walkingman))
+//        }
+//        walkframe = playframes
+//        let firstFrameTexture = walkframe[0]
+//        player = SKSpriteNode(texture: firstFrameTexture)
+//        addChild(player)
+//    }
+    
+    
+    
+//    @objc func runani(){
+//        player!.texture = SKTexture(imageNamed:"Mario_Jump")
+//        wait()
+//        player!.texture = SKTexture(imageNamed:"gold_coin")
+//        wait()
+//        player!.texture = SKTexture(imageNamed: "Mario_Jump")
+//        
+//    }
+    
+    
+    
+    
+    
+    
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {self.touchDown(atPoint: t.location(in: self))}
     }
@@ -73,7 +99,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     }
     func jump(){
         player!.texture = SKTexture(imageNamed: "Mario_Jump")
-        player?.physicsBody?.applyImpulse(CGVector(dx:0, dy: 100))
+        player!.physicsBody?.applyImpulse(CGVector(dx:0, dy: 50))
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
@@ -81,15 +107,28 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         }
     }
     func touchUp(atPoint pos : CGPoint) {
-        player?.texture = SKTexture(imageNamed: "Unknownm")
+        player!.texture = SKTexture(imageNamed: "Unknownm")
+    }
+    func setupCount(){
+        let coinC = SKLabelNode(fontNamed: "Courier")
+        coinC.name = Coincount
+        coinC.fontSize = 25
+        coinC.text = String(format: "Jesus Points: %04u", 0)
+        coinC.zPosition = 4
+        
+        coinC.position = CGPoint(
+            x: screenWidth/3 * -1,
+            y: screenHeight/3
+        )
+        addChild(coinC)
+        
     }
     
     
     
     func addCoin(){
         let coin = SKSpriteNode(imageNamed: "gold_coin")
-        coin.setScale(0.15)
-        
+        coin.setScale(0.06)
         //collision detection
         coin.physicsBody = SKPhysicsBody(rectangleOf: coin.size)
         coin.physicsBody?.categoryBitMask = UInt32(obstacleCategory)
@@ -176,7 +215,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     func processUserTaps(forUpdate currentTime: CFTimeInterval){
         for tapCount in tapQueue{
             if tapCount == 1 {
-                // jump function
+                // jump func
+                jump()
             }
             tapQueue.remove(at: 0)
         }
