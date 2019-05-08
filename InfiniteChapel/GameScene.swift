@@ -16,13 +16,13 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     
     let playername = "Player"
     var player: SKSpriteNode?
-//    var gametimer: Timer?
+    var score = 0
     var walkframe: [SKTexture] = []
     let randenemypos = Int.random(in: 0 ..< 2)
     let Coincount = "coinCount"
    
     let backgroundVelocity : CGFloat = 3.0
-    let coinVelocity: CGFloat = 5.0
+    let coinVelocity: CGFloat = 10.0
     
     var lastCoinAdded : TimeInterval = 0.0
     public var screenWidth: CGFloat{
@@ -48,7 +48,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         self.initializingScrollBackground()
         player = (childNode(withName: "Player")as? SKSpriteNode)!
         player!.physicsBody = SKPhysicsBody(rectangleOf: player!.size)
-        player!.setScale(0.85)
+        player!.setScale(0.75)
         player!.physicsBody?.categoryBitMask = UInt32(playercategory)
         player!.physicsBody?.isDynamic = true
         player!.physicsBody?.allowsRotation = false
@@ -60,36 +60,14 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         player!.physicsBody!.contactTestBitMask = BorderCategory | UInt32(obstacleCategory)
         setupCount()
         }
-//    func buildwalk(){
-//        let walkingplayer = SKTextureAtlas(named: "Walking")
-//        var playframes: [SKTexture] = []
-//        let numImages = walkingplayer.textureNames.count
-//        for i in 1...numImages{
-//            let walkingman = "walking\(i)"
-//            playframes.append(walkingplayer.textureNamed(walkingman))
-//        }
-//        walkframe = playframes
-//        let firstFrameTexture = walkframe[0]
-//        player = SKSpriteNode(texture: firstFrameTexture)
-//        addChild(player)
-//    }
+
     
-    
-    
-//    @objc func runani(){
-//        player!.texture = SKTexture(imageNamed:"Mario_Jump")
-//        wait()
-//        player!.texture = SKTexture(imageNamed:"gold_coin")
-//        wait()
-//        player!.texture = SKTexture(imageNamed: "Mario_Jump")
-//        
-//    }
-    
-    
-    
-    
-    
-    
+    func adjustScore(by points:Int){
+        score += points
+        if let score = childNode(withName:Coincount) as? SKLabelNode {
+            score.text = String(format: "Jesus Points: %04u", self.score)
+        }
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {self.touchDown(atPoint: t.location(in: self))}
@@ -175,7 +153,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
             if let bg = node as? SKSpriteNode{
                 bg.position = CGPoint(x: bg.position.x - self.backgroundVelocity, y : bg.position.y)
                 
-                if bg.position.x/2  <= -bg.size.width {
+                if bg.position.x  <= -bg.size.width {
                     bg.position = CGPoint(x:bg.position.x + bg.size.width * 2, y:bg.position.y)
                 }
             }
@@ -196,6 +174,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         if(firstBody.categoryBitMask == UInt32(playercategory)) && (secondBody.categoryBitMask == UInt32(obstacleCategory)){
             print("intersecting")
             secondBody.node!.removeFromParent()
+            adjustScore(by: 1)
         }
         if(firstBody.categoryBitMask == UInt32(playercategory)) && (secondBody.categoryBitMask == UInt32(BorderCategory)){
             print("intersecting border")
