@@ -57,6 +57,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         player!.setScale(0.75)
         player!.physicsBody?.categoryBitMask = UInt32(playercategory)
         player!.physicsBody?.isDynamic = true
+        player!.physicsBody?.usesPreciseCollisionDetection = true
         player!.physicsBody?.allowsRotation = false
         player!.physicsBody?.affectedByGravity = true
         player!.physicsBody?.contactTestBitMask = UInt32(obstacleCategory)
@@ -100,6 +101,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         let coinC = SKLabelNode(fontNamed: "Courier")
         coinC.name = Coincount
         coinC.fontSize = 25
+        coinC.fontColor = UIColor.black
         coinC.text = String(format: "Jesus Points: %04u", 0)
         coinC.zPosition = 4
         
