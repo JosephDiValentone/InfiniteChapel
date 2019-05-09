@@ -8,6 +8,7 @@
 
 import SpriteKit
 import GameplayKit
+import AVFoundation
 let obstacleCategory = 0x1 << 2
 let playercategory = 0x1 << 1
 let BorderCategory : UInt32 = 0x1 << 3
@@ -20,6 +21,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     var walkframe: [SKTexture] = []
     let randenemypos = Int.random(in: 0 ..< 2)
     let Coincount = "coinCount"
+    
+    var BGMus: AVAudioPlayer?
    
     let backgroundVelocity : CGFloat = 3.0
     let coinVelocity: CGFloat = 10.0
@@ -33,7 +36,10 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
     }
     
     var tapQueue = [Int]()
+ 
     
+    let CoinGrab = SKAction.playSoundFileNamed("smw_coin.wav", waitForCompletion: false)
+    //let BGM = SKAction.playSoundFileNamed("BGMusic.mp3", waitForCompletion: false)
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
@@ -59,7 +65,10 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         borderBody.categoryBitMask = BorderCategory
         player!.physicsBody!.contactTestBitMask = BorderCategory | UInt32(obstacleCategory)
         setupCount()
+        //run(BGM)
         }
+    
+    
 
     
     func adjustScore(by points:Int){
@@ -120,7 +129,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         coin.name = "coin"
         //random y position
         //let actualranY = random(min: coin.size.width, max:size.height-coin.size.height)
-        let randomint = Int.random(in: -200..<200)
+        let randomint = Int.random(in: -190..<190)
         //let randomy: CGFloat = CGFloat(arc4random_uniform(UInt32(randomint)))
         coin.position = CGPoint(x: screenWidth, y: CGFloat(randomint))
         self.addChild(coin)
@@ -172,6 +181,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
             secondBody = contact.bodyA
         }
         if(firstBody.categoryBitMask == UInt32(playercategory)) && (secondBody.categoryBitMask == UInt32(obstacleCategory)){
+            run(CoinGrab)
             print("intersecting")
             secondBody.node!.removeFromParent()
             adjustScore(by: 1)
@@ -213,6 +223,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate {
         if currentTime - self.lastCoinAdded > 1 {
             self.lastCoinAdded = currentTime + 1
             self.addCoin()
+            //run(BGM)
         }
         
         

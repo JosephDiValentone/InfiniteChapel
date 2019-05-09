@@ -9,14 +9,15 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import AVFoundation
+
 
 class GameViewController: UIViewController {
+   
+    var BMG: AVAudioPlayer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        let value = UIInterfaceOrientation.landscapeLeft.rawValue
-//        UIDevice.current.setValue(value, forKey: "orientation")
         
         if let scene = GameScene(fileNamed:"GameScene") {
             // Configure the view.
@@ -33,7 +34,16 @@ class GameViewController: UIViewController {
             
             skView.presentScene(scene)
         }
-       
+   
+        let sound = Bundle.main.path(forResource:"BGMusic", ofType: "mp3")
+        
+        do{
+            BMG = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: sound!))
+        }catch{
+            print(error)
+        }
+        BMG!.numberOfLoops = -1
+        BMG!.play()
         
     }
 

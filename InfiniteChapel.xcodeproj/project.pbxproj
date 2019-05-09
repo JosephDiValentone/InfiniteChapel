@@ -16,6 +16,8 @@
 		B858840C22675B2A00E4C1D7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B858840A22675B2A00E4C1D7 /* LaunchScreen.storyboard */; };
 		B858841722675B2A00E4C1D7 /* InfiniteChapelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B858841622675B2A00E4C1D7 /* InfiniteChapelTests.swift */; };
 		B858842222675B2A00E4C1D7 /* InfiniteChapelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B858842122675B2A00E4C1D7 /* InfiniteChapelUITests.swift */; };
+		B882E263228398F600D5AA8A /* smw_coin.wav in Resources */ = {isa = PBXBuildFile; fileRef = B882E262228398F600D5AA8A /* smw_coin.wav */; };
+		B882E26522839B0700D5AA8A /* BGMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B882E26422839B0700D5AA8A /* BGMusic.mp3 */; };
 		B8A648E922820EF20036A046 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = B8A648E822820EF20036A046 /* GameScene.sks */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +54,8 @@
 		B858841D22675B2A00E4C1D7 /* InfiniteChapelUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InfiniteChapelUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B858842122675B2A00E4C1D7 /* InfiniteChapelUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfiniteChapelUITests.swift; sourceTree = "<group>"; };
 		B858842322675B2A00E4C1D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B882E262228398F600D5AA8A /* smw_coin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = smw_coin.wav; sourceTree = "<group>"; };
+		B882E26422839B0700D5AA8A /* BGMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BGMusic.mp3; sourceTree = "<group>"; };
 		B8A648E822820EF20036A046 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,6 +89,7 @@
 			children = (
 				B85883FA22675B2800E4C1D7 /* InfiniteChapel */,
 				B858841522675B2A00E4C1D7 /* InfiniteChapelTests */,
+				B882E26122838ECF00D5AA8A /* Sounds */,
 				B858842022675B2A00E4C1D7 /* InfiniteChapelUITests */,
 				B85883F922675B2800E4C1D7 /* Products */,
 			);
@@ -132,6 +137,15 @@
 				B858842322675B2A00E4C1D7 /* Info.plist */,
 			);
 			path = InfiniteChapelUITests;
+			sourceTree = "<group>";
+		};
+		B882E26122838ECF00D5AA8A /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				B882E26422839B0700D5AA8A /* BGMusic.mp3 */,
+				B882E262228398F600D5AA8A /* smw_coin.wav */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,8 +253,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B858840722675B2900E4C1D7 /* Main.storyboard in Resources */,
+				B882E263228398F600D5AA8A /* smw_coin.wav in Resources */,
 				B858840922675B2A00E4C1D7 /* Assets.xcassets in Resources */,
 				B858840C22675B2A00E4C1D7 /* LaunchScreen.storyboard in Resources */,
+				B882E26522839B0700D5AA8A /* BGMusic.mp3 in Resources */,
 				B858840022675B2800E4C1D7 /* Actions.sks in Resources */,
 				B8A648E922820EF20036A046 /* GameScene.sks in Resources */,
 			);
